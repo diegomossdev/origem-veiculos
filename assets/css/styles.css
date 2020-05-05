@@ -1,0 +1,28 @@
+.each-car {
+  border-radius: 15px !important;
+}
+
+.img-car {
+  border-radius: 15px !important;
+}
+
+.each-car a {
+  color: rgb(117, 118, 130);
+}
+
+.h6, h6 {
+}
+
+.each-car a .brand-name {
+  color: rgb(86,86,96);
+}
+
+.each-car a h3 {
+  color: rgb(86,86,96);
+}
+
+.title-section a {
+  color: rgb(86,86,96);
+  text-decoration: none;
+}
+
