@@ -1,8 +1,8 @@
 module.exports = {
   dialect: 'mysql',
-  host: 'localhost',
-  username: 'root',
-  password: '',
+  host: 'mysql669.umbler.com',
+  username: 'origem_userdb',
+  password: 'OrigVeic2233Bd',
   database: 'origem_db',
   define: {
     timestamps: true,
