@@ -1,34 +1,7 @@
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
 
-import './config/ReactotronConfig';
-
-import Routes from './routes';
-import history from './services/history';
-
-import { store, persistor } from './store';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import GlobalStyle from './styles/global';
-import './styles/admin-panel.css';
-import './styles/auth-styles.css';
-import './styles/site-styles.css';
-
-function App() {
+export default function AppComponent() {
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <Router history={history}>
-          <Routes />
-          <GlobalStyle />
-          <ToastContainer autoClose={3000} />
-        </Router>
-      </PersistGate>
-    </Provider>
-  );
+    <h2>Origem veículos, aguarde!</h2>
+  )
 }
-
-export default App;
