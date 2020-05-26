@@ -1,32 +1,34 @@
-import express from 'express';
-import path from 'path';
-import cors from 'cors';
-import routes from './routes';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 
-import urlBase from './config/urlBase';
+import './config/ReactotronConfig';
 
-import './database';
+import Routes from './routes';
+import history from './services/history';
 
-class App {
-  constructor() {
-    this.server = express();
+import { store, persistor } from './store';
 
-    this.middlewares();
-    this.routes();
-  }
+import 'bootstrap/dist/css/bootstrap.min.css';
+import GlobalStyle from './styles/global';
+import './styles/admin-panel.css';
+import './styles/auth-styles.css';
+import './styles/site-styles.css';
 
-  middlewares() {
-    this.server.use(cors());
-    this.server.use(express.json());
-    this.server.use(
-      '/files',
-      express.static(path.resolve(__dirname, '..', 'temp', 'uploads'))
-    );
-  }
-
-  routes() {
-    this.server.use(routes);
-  }
+function App() {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Router history={history}>
+          <Routes />
+          <GlobalStyle />
+          <ToastContainer autoClose={3000} />
+        </Router>
+      </PersistGate>
+    </Provider>
+  );
 }
 
-export default new App().server;
+export default App;
