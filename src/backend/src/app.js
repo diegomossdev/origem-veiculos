@@ -5,6 +5,7 @@ import routes from './routes';
 
 import urlBase from './config/urlBase';
 
+
 import './database';
 
 class App {
