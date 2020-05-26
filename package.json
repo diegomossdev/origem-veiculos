@@ -52,7 +52,7 @@
     "react-app-rewired": "^2.1.6"
   },
   "scripts": {
-    "start": "npm install && node -r esm src/backend/src/server.js",
+    "start": "node -r esm src/backend/src/server.js",
     "postinstall": "npm run build",
     "build": "react-app-rewired build",
     "buildDefault": "react-scripts build",
