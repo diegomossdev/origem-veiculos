@@ -15,7 +15,7 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 const configs = {
-  caminho: "../../../../../../build",
+  caminho: "../../../build",
   forcarHTTPS: false,
   port: process.env.PORT || 3000
 }
