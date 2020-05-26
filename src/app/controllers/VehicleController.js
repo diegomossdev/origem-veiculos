@@ -1,14 +1,20 @@
-import Vehicle from '../models/Vehicle'
-import ThumbImage from '../models/ThumbImage'
-import File from '../models/File'
-import _ from 'lodash'
+import Vehicle from '../models/Vehicle';
+import ThumbImage from '../models/ThumbImage';
+import File from '../models/File';
 
 class VehicleController {
   async store(req, res) {
-    let vehicle = req.body
-    vehicle.user_id = req.userId
+    const vehicle = req.body;
+    vehicle.user_id = req.userId;
 
-    const { id, title, brand, model, year_fab, year_mod } = await Vehicle.create(vehicle);
+    const {
+      id,
+      title,
+      brand,
+      model,
+      year_fab,
+      year_mod,
+    } = await Vehicle.create(vehicle);
 
     return res.json({
       id,
@@ -22,12 +28,12 @@ class VehicleController {
 
   async patch(req, res) {
     try {
-      const vehicleId = req.params.vehicleId;
+      const { vehicleId } = req.params;
 
       const vehicleExists = await Vehicle.findByPk(vehicleId);
 
-      if(!vehicleExists) {
-        throw new Error('Veículo não encontrado.')
+      if (!vehicleExists) {
+        throw new Error('Veículo não encontrado.');
       }
 
       const { originalname: name, filename: path } = req.file;
@@ -40,15 +46,18 @@ class VehicleController {
       await Vehicle.update(
         { thumbimage_id: thumbImage.id },
         { where: { id: vehicleId } }
-      )
-      res.json({ ok: true, message: 'Imagem de destaque atualizada com sucesso.' })
+      );
+      res.json({
+        ok: true,
+        message: 'Imagem de destaque atualizada com sucesso.',
+      });
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
   }
 
   async index(req, res) {
-   const vehicles = await Vehicle.findAll({
+    const vehicles = await Vehicle.findAll({
       order: ['id'],
       attributes: [
         'id',
@@ -104,20 +113,16 @@ class VehicleController {
       });
 
       if (!vehicle.length) {
-        throw new Error('Veículo não encontrado.')
+        throw new Error('Veículo não encontrado.');
       }
 
       const images = await File.findAll({
         where: { vehicle_id: id },
         order: ['id'],
-        attributes: [
-          'id',
-          'url',
-          'path',
-        ]
+        attributes: ['id', 'url', 'path'],
       });
 
-      return res.json({vehicle, images});
+      return res.json({ vehicle, images });
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
