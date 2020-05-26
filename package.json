@@ -7,7 +7,7 @@
     "webpack:server": "webpack --config webpack.server.js --watch",
     "webpack:client": "webpack --config webpack.config.js --watch",
     "serve": "nodemon dist/bundle_server.js",
-    "start": "npm install && npm-run-all --parallel serve webpack:*"
+    "start": "npm-run-all --parallel serve webpack:*"
   },
   "repository": {
     "type": "git",
