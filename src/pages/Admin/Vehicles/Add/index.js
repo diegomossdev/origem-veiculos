@@ -7,9 +7,14 @@ import { useDispatch } from 'react-redux';
 import { sendVehicleRequest } from '~/store/modules/vehicles/actions';
 
 import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+// import { Editor } from 'react-draft-wysiwyg';
+const Editor = dynamic(
+  () => import('react-draft-wysiwyg').then(mod => mod.Editor),
+  { ssr: false }
+)
 import draftToHtml from 'draftjs-to-html';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 export default function AddVehicle() {
   const [editorState, setEditorState] = useState(EditorState.createEmpty())

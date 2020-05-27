@@ -13,8 +13,13 @@ import {
   removeVehicleRequest,
 } from '~/store/modules/vehicles/actions';
 
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// import { Editor } from 'react-draft-wysiwyg';
+const Editor = dynamic(
+  () => import('react-draft-wysiwyg').then(mod => mod.Editor),
+  { ssr: false }
+)
+// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import uploadImg from '~/assets/admin/upload-image.png';
 import noImg from '~/assets/site/no-img.jpg';
