@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Site Origem Veículos",
   "main": "src/index.js",
-  "proxy": "http://localhost:3333",
+  "proxy": "http://0.0.0.0:3333",
   "scripts": {
     "webpack:server": "webpack --config webpack.server.js --watch",
     "webpack:client": "webpack --config webpack.config.js --watch",
