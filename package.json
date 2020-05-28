@@ -11,7 +11,7 @@
     "nobuild:start": "react-app-rewired start",
     "dev": "nodemon api/src/server.js",
     "webpack:build": "webpack --config webpack.prod.js",
-    "start": "npm-install",
+    "start": "npm install",
     "postinstall": "npm-run-all --parallel nobuild:start dev"
   },
   "repository": {
