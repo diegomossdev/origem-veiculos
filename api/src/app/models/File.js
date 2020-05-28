@@ -1,5 +1,4 @@
 import Sequelize, { Model } from 'sequelize';
-import Vehicle from './Vehicle';
 
 import urlBase from '../../config/urlBase';
 
@@ -23,8 +22,7 @@ class File extends Model {
   }
 
   static associate(models) {
-    File.belongsTo(Vehicle, { foreignKey: 'vehicle_id', as: 'vehicle' });
-    // this.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id', as: 'vehicle' });
+    this.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id', as: 'vehicle' });
   }
 }
 

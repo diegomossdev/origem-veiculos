@@ -1,6 +1,4 @@
 import Sequelize, { Model } from 'sequelize';
-import User from './User';
-import ThumbImage from './ThumbImage';
 
 class Vehicle extends Model {
   static init(sequelize) {
@@ -39,12 +37,9 @@ class Vehicle extends Model {
     return this;
   }
 
-  
   static associate(models) {
-    Vehicle.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
-    Vehicle.belongsTo(ThumbImage, { foreignKey: 'thumbimage_id', as: 'thumbimage' });
-    // this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-    // this.belongsTo(models.ThumbImage, { foreignKey: 'thumbimage_id', as: 'thumbimage' });
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    this.belongsTo(models.ThumbImage, { foreignKey: 'thumbimage_id', as: 'thumbimage' });
   }
 }
 

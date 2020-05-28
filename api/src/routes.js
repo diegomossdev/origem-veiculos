@@ -9,29 +9,13 @@ import VehicleController from './app/controllers/VehicleController';
 
 import authMiddleware from './app/middlewares/auth';
 
+import path from 'path';
+
 const routes = new Router();
 const upload = multer(multerConfig);
 
-import App from '../../src/App';
-
-routes.get('/', function (req, res) {
-  const html = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Origem veículos</title>
-  </head>
-  <body>
-    <div id="app">
-      ${ReactDOM.render(<App />)}
-    </div>
-    <script src="bundle_client.js"></script>
-  </body>
-  </html>
-  `
-  res.send(html);
+routes.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../public/index.html'));
 });
 
 routes.post('/users', UserController.store);
