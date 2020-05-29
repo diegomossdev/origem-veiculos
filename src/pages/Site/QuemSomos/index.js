@@ -16,11 +16,11 @@ export default function QuemSomos() {
                 <div className="content-qs">
                   <h2>Nossa missão</h2>
                   <p>
-                    Ser a referência número 1 na venda assessorada de veículos no sul do Brasil.
+                    Oferecer veículos de qualidade, procedência e preço justo para nossos clientes. Executar de maneira clara, verdadeira e objetiva a assessoria na venda de veículos
                   </p>
                   <h2 style={{ marginTop: 30 }}>Nossa visão</h2>
                   <p>
-                  Ser a referência número 1 na venda assessorada de veículos no sul do Brasil.
+                    Ser a referência número 1 na venda assessorada de veículos no sul do Brasil.
                   </p>
                   <h2 style={{ marginTop: 30 }}>Nossos valores</h2>
                   <p>
