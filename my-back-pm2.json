@@ -1,9 +1,0 @@
-{
-    "apps": [
-        {
-            "name": "my-back",
-            "script": "npm",
-            "args" : "run dev"
-        }
-    ]
-}
