@@ -22,7 +22,7 @@ export default function Footer() {
                   />
                 </Link>
                 <p style={{ marginTop: 15 }}>
-                  Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.
+                  Assessoria e venda de veículos com qualidade e procedência.
                 </p>
               </Col>
               <Col md={3}>
@@ -54,10 +54,10 @@ export default function Footer() {
                 <h3>Atendimento ao cliente</h3>
                 <ul>
                   <li>
-                    (51) 99999-9999
+                    (51) 99705-0540
                   </li>
                   <li>
-                    (51) 99999-9999
+                    (51) 99771-6533
                   </li>
                   <li>
                     contato@email.com

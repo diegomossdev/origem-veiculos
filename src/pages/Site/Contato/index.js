@@ -20,14 +20,16 @@ export default function Contato() {
                 <div>
                   <h2>Telefones</h2>
                   <ul>
-                    <li>(51) 99999-9999</li>
-                    <li>(51) 99999-9999</li>
-                    <li>(51) 99999-9999</li>
+                    <li>
+                      (51) 99705-0540
+                    </li>
+                    <li>
+                      (51) 99771-6533
+                    </li>
                   </ul>
                   <h2>E-mails</h2>
                   <ul>
-                    <li>contato@email.com</li>
-                    <li>veiculos@email.com</li>
+                    <li>contato@origemveiculos.com.br</li>
                   </ul>
                   <h2>Redes sociais</h2>
                   <ul>
