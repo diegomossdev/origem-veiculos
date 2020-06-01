@@ -1,9 +1,10 @@
 import * as React from 'react';
+import AdminStyle from '../../../styles/admin';
 
 const AuthLayout: React.FC = ({ children }) => {
   return (
     <>
-      <h1>AuthLayout</h1>
+      <AdminStyle />
       {children}
     </>
   );

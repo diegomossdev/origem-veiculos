@@ -18,13 +18,35 @@ const upload = multer(multerConfig);
 routes.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '../../dist/public/index.html'));
 });
-
+routes.get('/quem-somos', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../dist/public/index.html'));
+});
+routes.get('/seminovos', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../dist/public/index.html'));
+});
+routes.get('/seminovos/:id/:seminovo', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../../dist/public/index.html'));
+});
+routes.get('/contato', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../dist/public/index.html'));
+});
 routes.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname + '../../../dist/public/index.html'));
 });
-
+routes.get('/admin/editar/veiculo/:id', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../../../dist/public/index.html'));
+});
+routes.get('/admin/veiculos', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../dist/public/index.html'));
+});
 routes.get('/admin/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname + '../../../dist/public/index.html'));
+});
+routes.get('/admin/novo/veiculo', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../../dist/public/index.html'));
+});
+routes.get('/admin/novo/veiculo/:id/imagens', (req, res) => {
+  res.sendFile(path.join(__dirname + '../../../../../../dist/public/index.html'));
 });
 
 

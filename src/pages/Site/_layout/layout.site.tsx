@@ -1,10 +1,12 @@
 import * as React from 'react';
+import {Header, Footer} from '../../../components/Site'
 
 const SiteLayout: React.FC = ({ children }) => {
   return (
     <>
-      <h1>SiteLayout</h1>
-      {children}
+      <Header />
+        {children}
+      <Footer />
     </>
   );
 }

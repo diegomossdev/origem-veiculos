@@ -1,0 +1,250 @@
+a:hover {
+  text-decoration: none;
+}
+
+a, p, h1, h2, h3, h4, h5, h6 {
+  color: #333333;
+}
+
+.text-transoform-uppercase {
+  text-transform: uppercase !important;
+}
+
+.header-color {
+  background-color: #3c3c3c;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #fff;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+@media (max-width: 991px) {
+  .navbar-light .navbar-nav .nav-link {
+      padding: 20px 15px;
+      font-size: 18px;
+  }
+}
+
+.navbar-light .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-light .navbar-toggler {
+  border: none;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+  color: #cf203d;
+  background-color: transparent;
+}
+
+.btn-origem-red {
+  color: #ffffff;
+  background-color: #cf203d;
+  border-color: #cf203d;
+}
+
+.btn-origem-red:hover {
+  color: #eaeaea;
+}
+
+.btn-origem-border {
+  color: #ffffff;
+  background-color: transparent;
+  border-color: #ffffff;
+}
+
+.btn-origem-border:hover {
+  color: #ffffff;
+}
+
+.page {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.page-seminovos {
+  background-color: #f3f5f8;
+}
+
+.page-index {
+  background-color: #f3f5f8;
+}
+
+.page-index .title-section a h3 {
+  text-transform: uppercase;
+}
+
+.each-car {
+  border-radius: 15px;
+}
+
+.each-car a img {
+  width: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.each-car a h3, .each-car a h6 {
+  color: rgb(117, 118, 130);
+  text-transform: uppercase;
+}
+
+.each-car .short-description {
+  min-height: 80px;
+}
+
+.each-car .value-car {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.each-car .value-car h3 {
+  color: rgb(86,86,96);
+}
+
+.subtitle-section {
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.subtitle-section h3, .subtitle-section p {
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .subtitle-section {
+      height: 260px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+  }
+}
+
+.call-to-action-seminovo {
+  color: #fff;
+  background-color: #cf203d;
+  padding: 50px 0;
+}
+
+.call-to-action-seminovo h1 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  padding-top: 0;
+  margin-top: 0;
+  color: inherit;
+}
+
+.call-to-action-seminovo p {
+  font-size: 16px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  padding-top: 0;
+  margin-top: 0;
+  color: inherit;
+}
+
+.list-group-item {
+  display: flex;
+}
+
+.list-group-item-inside.l4 {
+  width: 33.333333%;
+}
+
+.list-group-item-inside.l8 {
+  width: 66.666667%;
+}
+
+.list-group-item span {
+  font-weight: 700;
+}
+
+.value-before {
+  text-decoration: line-through;
+  font-size: 24px;
+  font-style: italic;
+}
+
+.value-before::before {
+  content: 'de: '
+}
+
+.images-car {
+  margin-top: 15px;
+}
+
+.images-car button {
+  border: none;
+}
+
+.images-car button img {
+  width: 100%;
+}
+
+.description ul li, .optionals ul li {
+  list-style: inside;
+}
+
+.footer-dark {
+  padding: 50px 0;
+  color: #f0f9ff;
+  background-color: #3c3c3c;
+}
+
+.footer-dark h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #f0f9ff;
+}
+
+.footer-dark p {
+  color: #f0f9ff;
+}
+
+.footer-dark ul {
+  padding: 0;
+  list-style: none;
+  line-height: 1.6;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.footer-dark ul a {
+  color: inherit;
+  text-decoration: none;
+  color: #f0f9ff;
+}
+
+.footer-dark ul a:hover {
+  opacity: 0.6;
+}
+
+.footer-dark .social {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-dark .social a {
+  padding: 0 15px;
+}
+
+.footer-dark .social a img {
+  height: 24px;
+}
+
+.footer-dark .copyright {
+  padding-top: 24px;
+  opacity: 0.3;
+  font-size: 13px;
+  margin-bottom: 0;
+  color: #f0f9ff;
+}

@@ -1,9 +1,13 @@
 import * as React from 'react';
+import AdminStyle from '../../../styles/admin';
+import { Sidebar, Top } from '../../../components/Admin';
 
 const AdminLayout: React.FC = ({ children }) => {
   return (
     <>
-      <h1>AdminLayout</h1>
+      <AdminStyle />
+      <Top />
+      <Sidebar />
       {children}
     </>
   );
