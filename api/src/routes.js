@@ -67,6 +67,10 @@ routes.patch('/vehicles/:vehicleId', upload.single('file'), VehicleController.pa
 routes.post('/files/vehicle/:vehicleId', upload.array('files'), FileController.store);
 routes.delete('/files/remove/:id', FileController.remove);
 
-routes.options('*', cors());
+routes.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 export default routes;
