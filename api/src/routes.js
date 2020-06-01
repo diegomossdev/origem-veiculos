@@ -15,6 +15,13 @@ import path from 'path';
 const routes = new Router();
 const upload = multer(multerConfig);
 
+routes.options('*', cors());
+routes.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 // ROTAS DO FRONTEND!!!
 routes.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '../../dist/public/index.html'));
@@ -67,10 +74,5 @@ routes.patch('/vehicles/:vehicleId', upload.single('file'), VehicleController.pa
 routes.post('/files/vehicle/:vehicleId', upload.array('files'), FileController.store);
 routes.delete('/files/remove/:id', FileController.remove);
 
-routes.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
 
 export default routes;
