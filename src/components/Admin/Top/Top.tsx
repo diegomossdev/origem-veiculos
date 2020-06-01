@@ -6,7 +6,6 @@ import {Dropdown} from 'react-bootstrap';
 import {widthSidebarAdmin} from '../../../helpers';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
 
-import { FaUser } from 'react-icons/fa';
 
 const Top: React.FC = () => {
   const { user, signOut } = React.useContext(AuthContext);
@@ -21,7 +20,6 @@ const Top: React.FC = () => {
       <div className="header-top" style={{ width: width - widthSidebarAdmin }}>
         <div className="user-data">
           <div className="img-user">
-            <FaUser />
           </div>
           <span>{user?.name}</span>
           <Dropdown>

@@ -3,10 +3,6 @@ import * as React from 'react';
 import {widthSidebarAdmin} from '../../../helpers';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
 
-import {
-  FaWhatsapp
-} from 'react-icons/fa'
-
 const Dashboard: React.FC = () => {
   const { width } = useWindowDimensions();
 
@@ -25,7 +21,6 @@ const Dashboard: React.FC = () => {
           <p>Qualquer dúvida, ou bug no seu site me chamar no whats!</p>
           <p>
             <a href="https://api.whatsapp.com/send?phone=5551993072820&amp;text=Ola%20Diego%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank">
-              <FaWhatsapp style={{ marginRight: 5 }}  />
               51. 993072820
             </a>
           </p>
