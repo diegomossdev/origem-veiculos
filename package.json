@@ -9,8 +9,9 @@
     "webpack:build": "webpack --config webpack.prod.js",
     "dev": "nodemon api/src/server.js",
     "serve": "nodemon dist/bundle_server.js",
-    "start": "npm-run-all --parallel webpack:client dev",
-    "start:dev": "react-app-rewired start"
+    "start:dev": "react-app-rewired start",
+    "start": "npm install",
+    "postinstall": "npm-run-all --parallel webpack:client dev"
   },
   "author": "",
   "license": "ISC",
