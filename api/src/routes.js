@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import multerConfig from './config/multer';
+import cors from 'cors';
 
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
@@ -65,5 +66,7 @@ routes.delete('/vehicle/remove/:vehicleId', VehicleController.remove);
 routes.patch('/vehicles/:vehicleId', upload.single('file'), VehicleController.patch);
 routes.post('/files/vehicle/:vehicleId', upload.array('files'), FileController.store);
 routes.delete('/files/remove/:id', FileController.remove);
+
+routes.options('*', cors());
 
 export default routes;
