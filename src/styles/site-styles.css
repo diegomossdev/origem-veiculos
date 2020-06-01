@@ -181,6 +181,7 @@ a, p, h1, h2, h3, h4, h5, h6 {
 
 .images-car button {
   border: none;
+  margin-top: 10px;
 }
 
 .images-car button img {
