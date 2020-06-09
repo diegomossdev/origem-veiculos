@@ -20,8 +20,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+    "isolatedModules": true
   },
   "exclude": [
     "./node_modules/**/*"
