@@ -3,6 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 import {Subtitle} from '../../../components/Site';
 
+import whatsapp from '../../../assets/site/whatsapp.png';
+
 const Contato: React.FC = () => {
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -14,7 +16,7 @@ const Contato: React.FC = () => {
       <div className="page page-contato">
         <Container>
           <Row>
-            <Col md={4}>
+            <Col md={6}>
               <div>
                 <h2>Telefones</h2>
                 <ul>
@@ -32,22 +34,19 @@ const Contato: React.FC = () => {
                 </ul>
               </div>
             </Col>
-            <Col md={8}>
-              <h2>Envie um e-mail por aqui</h2>
-              <form>
-                <div className="form-group">
-                  <input className="form-control" type="text" placeholder="Nome" />
-                </div>
-                <div className="form-group">
-                  <input className="form-control" type="text" placeholder="Telefone" />
-                </div>
-                <div className="form-group">
-                  <input className="form-control" type="text" placeholder="E-mail" />
-                </div>
-                <div className="form-group">
-                  <textarea className="form-control" name="message" placeholder="Mensagem" rows={5}></textarea>
-                </div>
-              </form>
+            <Col md={6}>
+              <h2>Envie uma mensagem para o nosso whatsapp</h2>
+              <div style={{ display: 'flex', marginTop: 15 }}>
+                <a href="https://api.whatsapp.com/send?phone=5551997716533&amp;text=Ola%20eu%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." target="_blank">
+                  <img
+                    src={whatsapp}
+                    alt="whats"
+                  />
+                  <div style={{ marginTop: 5 }}>
+                    (51) 99771-6533
+                  </div>
+                </a>
+              </div>
             </Col>
           </Row>
         </Container>
