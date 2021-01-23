@@ -1,1 +1,1 @@
-export default 'http://origemveiculos.com.br';
+export default 'http://localhost:3000';

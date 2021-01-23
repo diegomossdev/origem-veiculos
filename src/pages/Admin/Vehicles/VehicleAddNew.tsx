@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Dropdown } from 'react-bootstrap';
 import { Form, Input } from '@rocketseat/unform';
 import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
 
-import {widthSidebarAdmin} from '../../../helpers';
+import { UploadImage } from '../../../components/Admin';
+
+import { widthSidebarAdmin } from '../../../helpers';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
 
 import { EditorState, convertToRaw } from 'draft-js';
@@ -16,34 +18,67 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const VehicleAddNew: React.FC = () => {
   const { width } = useWindowDimensions();
-  const [editorState, setEditorState] = React.useState(EditorState.createEmpty())
-  const [editorStateOptionals, setEditorStateOptionals] = React.useState(EditorState.createEmpty())
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
+  const [editorStateOptionals, setEditorStateOptionals] = React.useState(
+    EditorState.createEmpty()
+  );
+  const [featuredImg, setFeaturedImg] = React.useState<any>({
+    send: false,
+    urlUpload: '',
+  });
+  const [categories, setCategories] = React.useState<any>([]);
+  const [category, setCategory] = React.useState<any>({
+    id: null,
+    name: null,
+  });
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  const getCategories = async () => {
+    try {
+      setLoading(true);
+      const { data } = await api.get('categories');
+      setLoading(false);
+
+      setCategories(data);
+    } catch (error) {
+      console.log('Erro, get categorias', error);
+    }
+  };
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    getCategories();
+    window.scrollTo(0, 0);
+  }, []);
 
   const onEditorStateChange = (editorState) => {
-    setEditorState(editorState)
+    setEditorState(editorState);
   };
 
   const onEditorStateChangeOptionals = (editorStateOptionals) => {
-    setEditorStateOptionals(editorStateOptionals)
+    setEditorStateOptionals(editorStateOptionals);
   };
 
   async function submitForm(form) {
-    const {data} = await api.post('vehicles', form);
+    const { data } = await api.post('vehicles', form);
 
     const id = data.id;
-    toast.success('Veículo adicionado');
-    history.push(`/admin/novo/veiculo/${id}/imagens`);
+    setFeaturedImg({ send: true, urlUpload: `vehicles/${id}` });
+    // toast.success('Veículo adicionado');
+    // history.push(`/admin/novo/veiculo/${id}/imagens`);
   }
 
   function handleSubmit(form) {
-    const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    const optionals = draftToHtml(convertToRaw(editorStateOptionals.getCurrentContent()))
-    form.description = description
-    form.optionals = optionals
+    const description = draftToHtml(
+      convertToRaw(editorState.getCurrentContent())
+    );
+    const optionals = draftToHtml(
+      convertToRaw(editorStateOptionals.getCurrentContent())
+    );
+    form.description = description;
+    form.optionals = optionals;
+    form.categoryId = category.id;
 
     submitForm(form);
   }
@@ -55,11 +90,40 @@ const VehicleAddNew: React.FC = () => {
           <h1>Adicionar veículo</h1>
         </div>
         <div className="box">
+          <UploadImage
+            send={featuredImg.send}
+            urlUpload={featuredImg.urlUpload}
+          />
           <Form className="form-edit" onSubmit={handleSubmit}>
             <Row>
-              <Col md={12}>
+              <Col md={6}>
                 <label>Título</label>
                 <Input name="title" type="text" placeholder="Título" />
+              </Col>
+
+              <Col md={6}>
+                <label>Categoria</label>
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    {category.name ? category.name : 'Selecione a categoria'}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    {categories.map((cat) => (
+                      <Dropdown.Item
+                        key={cat.id}
+                        onClick={() =>
+                          setCategory({
+                            id: cat.id,
+                            name: cat.name,
+                          })
+                        }
+                      >
+                        {cat.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
               </Col>
             </Row>
 
@@ -77,7 +141,11 @@ const VehicleAddNew: React.FC = () => {
             <Row>
               <Col md={6}>
                 <label>Ano Fabricação</label>
-                <Input name="year_fab" type="text" placeholder="Ano Fabricação" />
+                <Input
+                  name="year_fab"
+                  type="text"
+                  placeholder="Ano Fabricação"
+                />
               </Col>
               <Col md={6}>
                 <label>Ano Modelo</label>
@@ -121,7 +189,11 @@ const VehicleAddNew: React.FC = () => {
             <Row>
               <Col md={12}>
                 <label>Descrição curta</label>
-                <Input name="short_description" type="text" placeholder="Descrição curta" />
+                <Input
+                  name="short_description"
+                  type="text"
+                  placeholder="Descrição curta"
+                />
               </Col>
             </Row>
 
@@ -155,6 +227,6 @@ const VehicleAddNew: React.FC = () => {
       </div>
     </>
   );
-}
+};
 
 export { VehicleAddNew };

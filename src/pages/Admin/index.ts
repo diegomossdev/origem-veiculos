@@ -4,7 +4,7 @@ import { VehicleDetails } from './Vehicles/VehicleDetails';
 import { VehicleAddNew } from './Vehicles/VehicleAddNew';
 import { VehicleAddNewImages } from './Vehicles/VehicleAddNewImages';
 
-export { 
+export {
   Dashboard,
   Vehicles,
   VehicleDetails,

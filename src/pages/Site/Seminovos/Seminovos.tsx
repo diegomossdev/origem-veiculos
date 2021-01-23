@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Container, Row, Col } from 'react-bootstrap';
 import NumberFormat from 'react-number-format';
-import {Subtitle} from '../../../components/Site';
+import { Subtitle } from '../../../components/Site';
 
 import api from '../../../services/api';
 
@@ -29,40 +29,47 @@ const Seminovos: React.FC = () => {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
 
     async function getAllVehicles() {
       setLoading(true);
-      const {data} = await api.get('vehicles');
+      const { data } = await api.get('vehicles');
       setLoading(false);
 
       setVehicles(data);
-    };
+    }
 
     getAllVehicles();
   }, []);
 
   return (
     <>
-      <Subtitle subtitle="Carros disponíveis" description="Visualize seu carro e entre em contato conosco" />
+      <Subtitle
+        subtitle="Carros disponíveis"
+        description="Visualize seu carro e entre em contato conosco"
+      />
       <div className="page page-seminovos">
         <Container>
-        <Row>
+          <Row>
             {loading && <div>carregando</div>}
             {vehicles?.map((vehicle) => (
               <Col key={vehicle.id} md={4} style={{ marginTop: 30 }}>
-                <div className="shadow-sm each-car" style={{ backgroundColor: '#fff' }}>
+                <div
+                  className="shadow-sm each-car"
+                  style={{ backgroundColor: '#fff' }}
+                >
                   <div>
                     <Link to={`/seminovos/${vehicle.id}/${vehicle.slug}`}>
-                      <img src={vehicle.thumbimage?.url || noImg} alt={vehicle.title} />
+                      <img
+                        src={vehicle.thumbimage?.url || noImg}
+                        alt={vehicle.title}
+                      />
                     </Link>
                   </div>
                   <div style={{ padding: 15 }}>
                     <div className="short-description">
                       <Link to={`/seminovos/${vehicle.id}/${vehicle.slug}`}>
-                        <h6 className="brand-name">
-                          {vehicle.title}
-                        </h6>
+                        <h6 className="brand-name">{vehicle.title}</h6>
                         <h6 className="brand-name">
                           {vehicle.short_description}
                         </h6>
@@ -76,20 +83,29 @@ const Seminovos: React.FC = () => {
                           thousandSeparator={'.'}
                           decimalSeparator={','}
                           prefix={'R$'}
-                          renderText={value => <h3 className={`value ${vehicle.value_per ? 'value-before' : null}`}>
-                            {value}
-                          </h3>}
+                          renderText={(value) => (
+                            <h3
+                              className={`value ${
+                                vehicle.value_per ? 'value-before' : null
+                              }`}
+                            >
+                              {value}
+                            </h3>
+                          )}
                         />
 
-                        {vehicle.value_per &&
-                        <NumberFormat
-                          value={vehicle.value_per}
-                          displayType={'text'}
-                          thousandSeparator={'.'}
-                          decimalSeparator={','}
-                          prefix={'R$'}
-                          renderText={value => <h3 className="value">{value}</h3>}
-                        />}
+                        {vehicle.value_per && (
+                          <NumberFormat
+                            value={vehicle.value_per}
+                            displayType={'text'}
+                            thousandSeparator={'.'}
+                            decimalSeparator={','}
+                            prefix={'R$'}
+                            renderText={(value) => (
+                              <h3 className="value">{value}</h3>
+                            )}
+                          />
+                        )}
                       </Link>
                     </div>
                   </div>
@@ -101,6 +117,6 @@ const Seminovos: React.FC = () => {
       </div>
     </>
   );
-}
+};
 
 export { Seminovos };
