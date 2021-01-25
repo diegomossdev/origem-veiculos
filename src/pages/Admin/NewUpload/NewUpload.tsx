@@ -65,9 +65,7 @@ export const NewUpload = ({ send, urlUpload }: Props) => {
             {imagePreviewUrl ? (
               <img src={imagePreviewUrl} />
             ) : (
-              <div className="previewText">
-                Please select an Image for Preview
-              </div>
+              <div className="previewText">Selecione uma imagem destaque</div>
             )}
           </div>
         </div>

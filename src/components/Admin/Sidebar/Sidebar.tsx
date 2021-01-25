@@ -15,10 +15,17 @@ const Sidebar: React.FC = () => {
         </div>
 
         <ul>
-          <li>
+          {/* <li>
             <Link to="/admin/banners">
               <div>
                 <span>Banners</span>
+              </div>
+            </Link>
+          </li> */}
+          <li>
+            <Link to="/admin/novo/veiculo">
+              <div>
+                <span>Adicionar veículos</span>
               </div>
             </Link>
           </li>
@@ -30,6 +37,13 @@ const Sidebar: React.FC = () => {
             </Link>
           </li>
           <li>
+            <Link to="/admin">
+              <div>
+                <span>Em breve mais menus.</span>
+              </div>
+            </Link>
+          </li>
+          {/* <li>
             <Link to="/admin/pagina-home">
               <div>
                 <span>Página home</span>
@@ -56,14 +70,7 @@ const Sidebar: React.FC = () => {
                 <span>Rodapé</span>
               </div>
             </Link>
-          </li>
-          <li>
-            <Link to="/admin/new-upload">
-              <div>
-                <span>New upload</span>
-              </div>
-            </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>

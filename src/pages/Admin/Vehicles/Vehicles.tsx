@@ -131,7 +131,13 @@ const Vehicles: React.FC = () => {
                       alt={`veiculo-${vehicle.id}`}
                     />
                   </td>
-                  <td>{vehicle.title}</td>
+                  <td>
+                    {vehicle.title}
+                    <br />
+                    <strong>
+                      {vehicle.status === 0 ? 'Não vendido' : 'Vendido'}
+                    </strong>
+                  </td>
                   <td>
                     <NumberFormat
                       value={vehicle.value}

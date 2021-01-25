@@ -116,10 +116,14 @@ const VehicleAddNew: React.FC<any> = (props) => {
           <h1>Adicionar veículo</h1>
         </div>
         <div className="box">
-          <UploadImage
-            send={featuredImg.send}
-            urlUpload={featuredImg.urlUpload}
-          />
+          <Row>
+            <Col md={6}>
+              <UploadImage
+                send={featuredImg.send}
+                urlUpload={featuredImg.urlUpload}
+              />
+            </Col>
+          </Row>
           <Form className="form-edit" onSubmit={handleSubmit}>
             <Row>
               <Col md={6}>

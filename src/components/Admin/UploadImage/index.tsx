@@ -79,8 +79,12 @@ export const UploadImage = ({ send, urlUpload }: Props) => {
     if (imageSrcUploaded && file) {
       return (
         <div>
-          <button type="submit" onClick={() => removeImg()}>
-            excluir
+          <button
+            className="bt-excluir"
+            type="submit"
+            onClick={() => removeImg()}
+          >
+            <span>X</span>
           </button>
         </div>
       );
@@ -95,29 +99,22 @@ export const UploadImage = ({ send, urlUpload }: Props) => {
 
   return (
     <div className="previewComponent">
+      <div className="imgPreview">
+        {imageSrcUploaded ? (
+          <img src={imageSrcUploaded} />
+        ) : (
+          <div className="previewText">Selecione uma imagem destaque</div>
+        )}
+      </div>
       <form onSubmit={(e) => handleSubmit()}>
         <input
           className="fileInput"
           type="file"
           onChange={(e) => handleImageUpload(e)}
         />
-        <button
-          className="submitButton"
-          type="submit"
-          onClick={(e) => handleSubmit()}
-        >
-          Upload Image
-        </button>
       </form>
       {removeImgRender()}
       {errorFile && <div>{errorFile}</div>}
-      <div className="imgPreview">
-        {imageSrcUploaded ? (
-          <img src={imageSrcUploaded} />
-        ) : (
-          <div className="previewText">Please select an Image for Preview</div>
-        )}
-      </div>
     </div>
   );
 };

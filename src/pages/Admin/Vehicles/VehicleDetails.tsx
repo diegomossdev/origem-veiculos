@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { widthSidebarAdmin } from '../../../helpers';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
+import imageCompression from 'browser-image-compression';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
@@ -86,6 +87,9 @@ const VehicleDetails: React.FC<any> = (props) => {
     send: false,
     urlUpload: '',
   });
+  const [imageSrcUploaded, setImageSrcUploaded] = React.useState('');
+  const [file, setFile] = React.useState('');
+  const [errorFile, setErrorFile] = React.useState('');
 
   const [categories, setCategories] = React.useState<any>([]);
   const [category, setCategory] = React.useState<any>({
@@ -96,10 +100,6 @@ const VehicleDetails: React.FC<any> = (props) => {
     status: hasVehicle.status,
     name: hasVehicle.status === 0 ? 'Não vendido' : 'Vendido',
   });
-
-  React.useEffect(() => {
-    console.log('category', category);
-  }, [category]);
 
   const getCategories = async () => {
     try {
@@ -138,11 +138,25 @@ const VehicleDetails: React.FC<any> = (props) => {
     setEditorStateOptionals(editorStateOptionals);
   };
 
+  async function sendImage(id) {
+    let formData = new FormData();
+    formData.append('file', file);
+
+    await api.patch(`vehicles/${id}`, formData);
+
+    toast.success('Produto atualizado!');
+    history.push(`/admin/veiculos`);
+  }
+
   async function submitForm(form) {
     await api.put(`vehicle/${hasVehicle.id}`, form);
 
-    toast.success('Veículo atualizado!');
-    history.push('/admin/veiculos');
+    if (file) {
+      sendImage(hasVehicle.id);
+    } else {
+      toast.success('Veículo atualizado!');
+      history.push('/admin/veiculos');
+    }
   }
 
   function handleSubmit(form) {
@@ -181,17 +195,48 @@ const VehicleDetails: React.FC<any> = (props) => {
     toast.success(data.message);
   };
 
-  const handleChangeThumbImage = async (e) => {
-    const file = e.target.files[0];
+  let fileReader;
 
+  const handleFileRead = () => {
+    const content = fileReader.result;
+    setImageSrcUploaded(content);
+  };
+
+  const handleChangeThumbImage = async (file) => {
     if (file) {
-      let formData = new FormData();
-      formData.append('file', file);
+      if (
+        file.type !== 'image/png' &&
+        file.type !== 'image/jpg' &&
+        file.type !== 'image/jpeg'
+      ) {
+        setErrorFile('Tipo de arquivo não aceito!');
+      } else {
+        setErrorFile('');
+        setFile(file);
 
-      const { data } = await api.patch(`vehicles/${hasVehicle.id}`, formData);
-      toast.success(data.message);
+        fileReader = new FileReader();
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsDataURL(file);
+      }
     }
   };
+
+  async function handleImageUpload(event) {
+    const imageFile = event.target.files[0];
+
+    const options = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 850,
+      useWebWorker: true,
+    };
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+
+      await handleChangeThumbImage(compressedFile);
+    } catch (error) {
+      setErrorFile('Ops! houve algum problema.');
+    }
+  }
 
   const handleRemoveVehicle = async (id) => {
     const { data } = await api.delete(`vehicle/remove/${id}`);
@@ -211,6 +256,11 @@ const VehicleDetails: React.FC<any> = (props) => {
 
     toast.success(data.message);
   };
+
+  function removeImage() {
+    setFile('');
+    setImageSrcUploaded('');
+  }
 
   return (
     <>
@@ -250,13 +300,9 @@ const VehicleDetails: React.FC<any> = (props) => {
           </Button>
         </div>
         <div className="box">
-          <UploadImage
-            send={featuredImg.send}
-            urlUpload={featuredImg.urlUpload}
-          />
           <div className="featured-img">
             <span>Imagem destaque</span>
-            <Row style={{ marginTop: 15 }}>
+            {/* <Row style={{ marginTop: 15 }}>
               <Col xs={4}>
                 <form>
                   <label htmlFor="file">
@@ -274,7 +320,62 @@ const VehicleDetails: React.FC<any> = (props) => {
                   />
                 </form>
               </Col>
+            </Row> */}
+            <Row style={{ marginTop: 15, marginBottom: 15 }}>
+              <Col xs={4}>
+                {hasVehicle?.id ? (
+                  <div style={{ fontStyle: 'italic' }}>
+                    Para trocar a imagem, clique sob essa:
+                  </div>
+                ) : null}
+
+                <div className="add-images-to-upload">
+                  <form>
+                    <label htmlFor="file">
+                      {!file ? (
+                        hasVehicle.thumbimage ? (
+                          <>
+                            <img
+                              src={hasVehicle.thumbimage.url}
+                              alt="upload"
+                              className="uploadImg thumbedit"
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <span>Procurar imagem</span>
+                            <img
+                              src={uploadImg}
+                              alt="upload"
+                              className="uploadImg thumbedit"
+                            />
+                          </>
+                        )
+                      ) : (
+                        <img
+                          className="thumbedit"
+                          src={imageSrcUploaded}
+                          alt="upload-file"
+                        />
+                      )}
+                    </label>
+                    <input type="file" id="file" onChange={handleImageUpload} />
+                  </form>
+                </div>
+                {errorFile && <div className="error-file">{errorFile}</div>}
+              </Col>
             </Row>
+            {file && (
+              <Row style={{ marginBottom: 15 }}>
+                <Col xs={4}>
+                  <div className="action-bts">
+                    <Button variant="danger" onClick={removeImage}>
+                      Remover
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            )}
           </div>
 
           {loading ? (
