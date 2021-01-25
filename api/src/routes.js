@@ -104,6 +104,7 @@ routes.use(authMiddleware);
 routes.put('/users', UserController.update);
 
 routes.post('/vehicles', VehicleController.store);
+routes.put('/vehicle/:id', VehicleController.update);
 routes.delete('/vehicle/remove/:vehicleId', VehicleController.remove);
 routes.patch(
   '/vehicles/:vehicleId',
@@ -115,6 +116,7 @@ routes.post(
   upload.array('files'),
   FileController.store
 );
+
 routes.delete('/files/remove/:id', FileController.remove);
 
 export default routes;

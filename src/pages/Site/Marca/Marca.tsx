@@ -16,6 +16,7 @@ interface VehiclesData {
   value_per: string;
   short_description: string;
   slug: string;
+  status: number;
   thumbimage: {
     id: number;
     url: string;
@@ -61,6 +62,11 @@ const Marca: React.FC = () => {
                   style={{ backgroundColor: '#fff' }}
                 >
                   <div>
+                    {vehicle.status === 1 && (
+                      <div className="container-sale">
+                        <img src="/img/vendido.png" />
+                      </div>
+                    )}
                     <Link to={`/seminovos/${vehicle.id}/${vehicle.slug}`}>
                       <img
                         src={vehicle.thumbimage?.url || noImg}

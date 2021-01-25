@@ -29,11 +29,16 @@ const Marcas: React.FC = () => {
       try {
         setLoading(true);
         const { data } = await api.get('categories');
-        console.log(data);
+
+        const categorias = data.filter((item) => {
+          if (item?.vehicles?.length >= 1) {
+            return item;
+          }
+        });
 
         setLoading(false);
 
-        setCategories(data);
+        setCategories(categorias);
       } catch (error) {
         console.log('Erro, get categorias', error);
       }

@@ -2,7 +2,14 @@ a:hover {
   text-decoration: none;
 }
 
-a, p, h1, h2, h3, h4, h5, h6 {
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #333333;
 }
 
@@ -22,8 +29,8 @@ a, p, h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 991px) {
   .navbar-light .navbar-nav .nav-link {
-      padding: 20px 15px;
-      font-size: 18px;
+    padding: 20px 15px;
+    font-size: 18px;
   }
 }
 
@@ -35,7 +42,8 @@ a, p, h1, h2, h3, h4, h5, h6 {
   border: none;
 }
 
-.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
   color: #cf203d;
   background-color: transparent;
 }
@@ -81,13 +89,24 @@ a, p, h1, h2, h3, h4, h5, h6 {
   border-radius: 15px;
 }
 
+.each-car .container-sale {
+  position: absolute;
+}
+
+.each-car .container-sale img {
+  width: 60%;
+  margin-left: -17px;
+  margin-top: -20px;
+}
+
 .each-car a img {
   width: 100%;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
 
-.each-car a h3, .each-car a h6 {
+.each-car a h3,
+.each-car a h6 {
   color: rgb(117, 118, 130);
   text-transform: uppercase;
 }
@@ -102,7 +121,7 @@ a, p, h1, h2, h3, h4, h5, h6 {
 }
 
 .each-car .value-car h3 {
-  color: rgb(86,86,96);
+  color: rgb(86, 86, 96);
 }
 
 .subtitle-section {
@@ -112,16 +131,17 @@ a, p, h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 
-.subtitle-section h3, .subtitle-section p {
+.subtitle-section h3,
+.subtitle-section p {
   color: #ffffff;
 }
 
 @media (min-width: 768px) {
   .subtitle-section {
-      height: 260px;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 }
 
@@ -172,7 +192,7 @@ a, p, h1, h2, h3, h4, h5, h6 {
 }
 
 .value-before::before {
-  content: 'de: '
+  content: 'de: ';
 }
 
 .images-car {
@@ -188,7 +208,8 @@ a, p, h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-.description ul li, .optionals ul li {
+.description ul li,
+.optionals ul li {
   list-style: inside;
 }
 

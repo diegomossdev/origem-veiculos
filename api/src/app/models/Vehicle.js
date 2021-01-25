@@ -21,6 +21,7 @@ class Vehicle extends Model {
         optionals: Sequelize.TEXT,
         thumbimage_id: Sequelize.INTEGER,
         category_id: Sequelize.INTEGER,
+        status: Sequelize.INTEGER,
       },
       {
         sequelize,

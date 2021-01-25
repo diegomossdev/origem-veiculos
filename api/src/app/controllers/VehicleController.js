@@ -65,14 +65,25 @@ class VehicleController {
 
   async index(req, res) {
     const vehicles = await Vehicle.findAll({
-      order: ['id'],
+      order: [['updated_at', 'DESC']],
       attributes: [
+        'brand',
+        'description',
+        'doors',
+        'fuel',
         'id',
-        'title',
-        'value',
-        'value_per',
+        'mileage',
+        'model',
+        'optionals',
         'short_description',
         'slug',
+        'title',
+        'transmission',
+        'value',
+        'value_per',
+        'year_fab',
+        'year_mod',
+        'status',
       ],
       include: [
         {
@@ -114,6 +125,7 @@ class VehicleController {
           'slug',
           'description',
           'optionals',
+          'status',
         ],
         include: [
           {
@@ -140,6 +152,37 @@ class VehicleController {
       });
 
       return res.json({ vehicle, images });
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      let vehicle = req.body;
+      vehicle.category_id = vehicle.categoryId;
+
+      if (!id) {
+        throw new Error('Precisa ser enviado o id de um veículo.');
+      }
+
+      if (!vehicle.categoryId) {
+        throw new Error('Precisa ser enviado o id de uma categoria.');
+      }
+
+      if (vehicle.name) {
+        let itemsSlug = `${vehicle.brand.toLowerCase()} ${vehicle.model.toLowerCase()} ${vehicle.year_fab.toLowerCase()} ${vehicle.year_mod.toLowerCase()}`;
+        let slugItem = slugify(itemsSlug, { lower: true });
+        vehicle.slug = slugItem;
+      }
+      console.log(vehicle);
+
+      const vehiclePut = await Vehicle.update(vehicle, {
+        where: { id },
+      });
+
+      return res.json(vehiclePut);
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }

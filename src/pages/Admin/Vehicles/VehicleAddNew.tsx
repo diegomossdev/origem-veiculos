@@ -11,15 +11,41 @@ import { UploadImage } from '../../../components/Admin';
 import { widthSidebarAdmin } from '../../../helpers';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
 
-import { EditorState, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const VehicleAddNew: React.FC = () => {
+interface Props {
+  location: any;
+}
+
+const VehicleAddNew: React.FC<any> = (props) => {
+  const hasProduct = props.location;
+  React.useEffect(() => {
+    console.log('hasProduct', hasProduct);
+  }, [hasProduct]);
+  const [productEdit, setProductEdit] = React.useState({
+    // id: hasProduct?.id,
+    // name: hasProduct?.name,
+    description: hasProduct?.description,
+    // image: hasProduct?.image,
+    // attributes: hasProduct?.attributes
+  });
   const { width } = useWindowDimensions();
   const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty()
+    hasProduct?.name
+      ? EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            convertFromHTML(productEdit.description)
+          )
+        )
+      : EditorState.createEmpty()
   );
   const [editorStateOptionals, setEditorStateOptionals] = React.useState(
     EditorState.createEmpty()

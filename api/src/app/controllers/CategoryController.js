@@ -7,6 +7,13 @@ class CategoryController {
     const categories = await Category.findAll({
       order: ['id'],
       attributes: ['id', 'name', 'img', 'slug'],
+      include: [
+        {
+          model: Vehicle,
+          as: 'vehicles',
+          attributes: ['id'],
+        },
+      ],
     });
 
     return res.json(categories);
@@ -30,6 +37,7 @@ class CategoryController {
               'value_per',
               'short_description',
               'slug',
+              'status',
             ],
             include: [
               {
