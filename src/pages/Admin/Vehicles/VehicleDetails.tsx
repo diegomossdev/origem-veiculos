@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 
-import {widthSidebarAdmin} from '../../../helpers';
+import { widthSidebarAdmin } from '../../../helpers';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
+import imageCompression from 'browser-image-compression';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
 import { toast } from 'react-toastify';
 
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Dropdown } from 'react-bootstrap';
 import { Form, Input } from '@rocketseat/unform';
+import { UploadImage } from '../../../components/Admin';
 
-import { EditorState, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -19,204 +26,389 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import noImg from '../../../assets/no-img.jpg';
 import uploadImg from '../../../assets/upload-image.png';
 
-interface ThumbImgData {
+type Category = {
   id: number;
-  url: string;
-  path: string;
   name: string;
-}
+  slug: string;
+  img: string;
+};
 
-interface VehicleData {
-  vehicle: [
-    {
-      brand: string;
-      description: string;
-      doors: string;
-      fuel: string;
-      id: number;
-      mileage: string;
-      model: string;
-      optionals: string;
-      short_description: string;
-      slug: string;
-      thumbimage: ThumbImgData | null;
-      title: string;
-      transmission: string;
-      value: string;
-      value_per: string;
-      year_fab: string;
-    }
-  ];
-  images: [
-    {
-      id: number;
-      url: string;
-      path: string;
-    }
-  ]
-}
+type Thumb = {
+  url: string;
+  id: number;
+  name: string;
+  path: string;
+};
 
-const VehicleDetails: React.FC = () => {
+type VehicleData = {
+  brand: string | null;
+  category: Category;
+  category_id: number;
+  description: string;
+  doors: string;
+  fuel: string;
+  id: number;
+  mileage: string;
+  model: string;
+  optionals: string;
+  short_description: string;
+  slug: string;
+  thumbimage: Thumb;
+  title: string;
+  transmission: string;
+  value: string;
+  value_per: string;
+  year_fab: string;
+  year_mod: string;
+  status: number;
+};
+
+const VehicleDetails: React.FC<any> = (props) => {
+  const hasVehicle = props.location.state;
+  console.log('vehicle', hasVehicle);
   const { width } = useWindowDimensions();
-  
-  const { id } = useParams();
-  const [vehicle, setVehicle] = React.useState<VehicleData | null>(null);
+
   const [loading, setLoading] = React.useState(false);
-  const [editorState, setEditorState] = React.useState(EditorState.createEmpty());
-  const [editorStateOptionals, setEditorStateOptionals] = React.useState(EditorState.createEmpty());
+  const [vehicle, setVehicle] = React.useState<VehicleData>(
+    hasVehicle?.id ? hasVehicle : ({} as VehicleData)
+  );
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(convertFromHTML(hasVehicle.description))
+    )
+  );
+  const [editorStateOptionals, setEditorStateOptionals] = React.useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(convertFromHTML(hasVehicle.optionals))
+    )
+  );
+  const [images, setImages] = React.useState<any>([]);
+  const [featuredImg, setFeaturedImg] = React.useState<any>({
+    send: false,
+    urlUpload: '',
+  });
+  const [imageSrcUploaded, setImageSrcUploaded] = React.useState('');
+  const [file, setFile] = React.useState('');
+  const [errorFile, setErrorFile] = React.useState('');
 
-  React.useEffect(() => {
-    window.scrollTo(0, 0)
+  const [categories, setCategories] = React.useState<any>([]);
+  const [category, setCategory] = React.useState<any>({
+    id: hasVehicle.category.id,
+    name: hasVehicle.category.name,
+  });
+  const [status, setStatus] = React.useState<any>({
+    status: hasVehicle.status,
+    name: hasVehicle.status === 0 ? 'Não vendido' : 'Vendido',
+  });
 
-    async function getVehicleDetails() {
+  const getCategories = async () => {
+    try {
       setLoading(true);
-      const {data} = await api.get(`vehicles/${id}`);
+      const { data } = await api.get('categories');
       setLoading(false);
 
-      setVehicle(data);
-    };
-
-    getVehicleDetails();
-  }, []);
-
-  let car = vehicle?.vehicle[0];
-  let imagesToState: any = vehicle?.images;
-
-  const [images, setImages] = React.useState(imagesToState);
+      setCategories(data);
+    } catch (error) {
+      console.log('Erro, get categorias', error);
+    }
+  };
 
   React.useEffect(() => {
-    setImages(imagesToState);
-  }, [imagesToState]);
+    window.scrollTo(0, 0);
+
+    async function getImagesVehicle() {
+      setLoading(true);
+      const { data } = await api.get(`vehicles/${hasVehicle.id}`);
+      setLoading(false);
+
+      console.log(data);
+
+      setImages(data?.images);
+    }
+
+    getImagesVehicle();
+    getCategories();
+  }, []);
 
   const onEditorStateChange = (editorState) => {
-    setEditorState(editorState)
+    setEditorState(editorState);
   };
 
   const onEditorStateChangeOptionals = (editorStateOptionals) => {
-    setEditorStateOptionals(editorStateOptionals)
+    setEditorStateOptionals(editorStateOptionals);
   };
 
+  async function sendImage(id) {
+    let formData = new FormData();
+    formData.append('file', file);
+
+    await api.patch(`vehicles/${id}`, formData);
+
+    toast.success('Produto atualizado!');
+    history.push(`/admin/veiculos`);
+  }
 
   async function submitForm(form) {
-    console.log(form);
-  };
+    await api.put(`vehicle/${hasVehicle.id}`, form);
+
+    if (file) {
+      sendImage(hasVehicle.id);
+    } else {
+      toast.success('Veículo atualizado!');
+      history.push('/admin/veiculos');
+    }
+  }
 
   function handleSubmit(form) {
-    const description = draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    const optionals = draftToHtml(convertToRaw(editorStateOptionals.getCurrentContent()))
-    form.description = description
-    form.optionals = optionals
+    const description = draftToHtml(
+      convertToRaw(editorState.getCurrentContent())
+    );
+    const optionals = draftToHtml(
+      convertToRaw(editorStateOptionals.getCurrentContent())
+    );
+    form.description = description;
+    form.optionals = optionals;
+    form.categoryId = category.id;
+    form.status = status.status;
 
     submitForm(form);
-  };
+  }
 
   const handleChange = (e) => {
     const targetFiles = e.target.files;
 
-    if(targetFiles.length) {
-      handleSendFile(targetFiles)
-    };
+    if (targetFiles.length) {
+      handleSendFile(targetFiles);
+    }
   };
-  
+
   const handleSendFile = async (files) => {
     let formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      formData.append(`files`, files[i])
+      formData.append(`files`, files[i]);
     }
 
-    const {data} = await api.post(`files/vehicle/${id}`, formData);
+    const { data } = await api.post(`files/vehicle/${hasVehicle.id}`, formData);
 
-    console.log(data)
-
-    // if(data.ok) {
-    //   setImages([...images], );
-    // };
+    console.log(data);
 
     toast.success(data.message);
-  }
+  };
 
-  const handleChangeThumbImage = async (e) => {
-    const file = e.target.files[0];
+  let fileReader;
 
-    if(file) {
-      let formData = new FormData();
-      formData.append('file', file);
+  const handleFileRead = () => {
+    const content = fileReader.result;
+    setImageSrcUploaded(content);
+  };
 
-      const {data} = await api.patch(`vehicles/${id}`, formData);
-      toast.success(data.message);
+  const handleChangeThumbImage = async (file) => {
+    if (file) {
+      if (
+        file.type !== 'image/png' &&
+        file.type !== 'image/jpg' &&
+        file.type !== 'image/jpeg'
+      ) {
+        setErrorFile('Tipo de arquivo não aceito!');
+      } else {
+        setErrorFile('');
+        setFile(file);
+
+        fileReader = new FileReader();
+        fileReader.onloadend = handleFileRead;
+        fileReader.readAsDataURL(file);
+      }
     }
   };
 
+  async function handleImageUpload(event) {
+    const imageFile = event.target.files[0];
+
+    const options = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 850,
+      useWebWorker: true,
+    };
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+
+      await handleChangeThumbImage(compressedFile);
+    } catch (error) {
+      setErrorFile('Ops! houve algum problema.');
+    }
+  }
+
   const handleRemoveVehicle = async (id) => {
-    const {data} = await api.delete(`vehicle/remove/${id}`);
+    const { data } = await api.delete(`vehicle/remove/${id}`);
     toast.error(data.message);
 
     history.push(`/admin/veiculos`);
-  }
+  };
 
   const handleRemoveImage = async (id) => {
-    const {data} = await api.delete(`files/remove/${id}`);
+    const { data } = await api.delete(`files/remove/${id}`);
 
-    if(data.ok) {
+    if (data.ok) {
       const imagesUpdated = images?.filter((image) => image.id !== id);
 
       setImages(imagesUpdated);
     }
 
     toast.success(data.message);
+  };
+
+  function removeImage() {
+    setFile('');
+    setImageSrcUploaded('');
   }
 
   return (
     <>
       <div className="content" style={{ width: width - widthSidebarAdmin }}>
         <div className="title-section">
-          <h1>Editar veículo</h1>
-          <Button variant="danger" onClick={() => handleRemoveVehicle(id)}>
+          <div>
+            <h1>Editar veículo</h1>
+            <div className="status-vehicle-container">
+              <div className="status-vehicle">Status do veículo:</div>
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  {status.name}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() =>
+                      setStatus({ status: false, name: 'Não vendido' })
+                    }
+                  >
+                    Não vendido
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => setStatus({ status: true, name: 'Vendido' })}
+                  >
+                    Vendido
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          </div>
+          <Button
+            variant="danger"
+            onClick={() => handleRemoveVehicle(hasVehicle.id)}
+          >
             Remover veículo
           </Button>
         </div>
         <div className="box">
           <div className="featured-img">
             <span>Imagem destaque</span>
-            <Row style={{ marginTop: 15 }}>
+            {/* <Row style={{ marginTop: 15 }}>
               <Col xs={4}>
                 <form>
                   <label htmlFor="file">
                     <span>Alterar imagem (clicar sob ela)</span>
-                      <img
-                        style={{ width: "100%" }}
-                        src={car?.thumbimage?.url || noImg}
-                        alt={`car-${car?.id}`}
-                      />
+                    <img
+                      style={{ width: '100%' }}
+                      src={vehicle?.thumbimage.url || noImg}
+                      alt={`car-${vehicle?.id}`}
+                    />
                   </label>
-                  <input type="file" id="file" onChange={handleChangeThumbImage} />
+                  <input
+                    type="file"
+                    id="file"
+                    onChange={handleChangeThumbImage}
+                  />
                 </form>
               </Col>
+            </Row> */}
+            <Row style={{ marginTop: 15, marginBottom: 15 }}>
+              <Col xs={4}>
+                {hasVehicle?.id ? (
+                  <div style={{ fontStyle: 'italic' }}>
+                    Para trocar a imagem, clique sob essa:
+                  </div>
+                ) : null}
+
+                <div className="add-images-to-upload">
+                  <form>
+                    <label htmlFor="file">
+                      {!file ? (
+                        hasVehicle.thumbimage ? (
+                          <>
+                            <img
+                              src={hasVehicle.thumbimage.url}
+                              alt="upload"
+                              className="uploadImg thumbedit"
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <span>Procurar imagem</span>
+                            <img
+                              src={uploadImg}
+                              alt="upload"
+                              className="uploadImg thumbedit"
+                            />
+                          </>
+                        )
+                      ) : (
+                        <img
+                          className="thumbedit"
+                          src={imageSrcUploaded}
+                          alt="upload-file"
+                        />
+                      )}
+                    </label>
+                    <input type="file" id="file" onChange={handleImageUpload} />
+                  </form>
+                </div>
+                {errorFile && <div className="error-file">{errorFile}</div>}
+              </Col>
             </Row>
+            {file && (
+              <Row style={{ marginBottom: 15 }}>
+                <Col xs={4}>
+                  <div className="action-bts">
+                    <Button variant="danger" onClick={removeImage}>
+                      Remover
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            )}
           </div>
 
-          <div className={images?.length ? 'has-images' : ''}>
-            {images?.length ? <div className="imgs-vehicle">
-              <span>Imagens do veículo</span>
-            </div> : null}
-            <Row>
-            {images?.map((image) => (
-              <Col key={image.id} xs={6} md={2} style={{ marginBottom: 15 }}>
-                <div className="content-img-upload">
-                  <button className="remove-img-upload" onClick={() => handleRemoveImage(image.id)}>
-                    <span>
-                      X
-                    </span>
-                  </button>
-                  <img
-                    src={image.url}
-                    alt={`${image.id}`}
-                  />
+          {loading ? (
+            <div>Carregando imagens</div>
+          ) : (
+            <div className={images?.length ? 'has-images' : ''}>
+              {images?.length ? (
+                <div className="imgs-vehicle">
+                  <span>Imagens do veículo</span>
                 </div>
-              </Col>
-            ))}
-            </Row>
-          </div>
+              ) : null}
+              <Row>
+                {images?.map((image) => (
+                  <Col
+                    key={image.id}
+                    xs={6}
+                    md={2}
+                    style={{ marginBottom: 15 }}
+                  >
+                    <div className="content-img-upload">
+                      <button
+                        className="remove-img-upload"
+                        onClick={() => handleRemoveImage(image.id)}
+                      >
+                        <span>X</span>
+                      </button>
+                      <img src={image.url} alt={`${image.id}`} />
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
 
           <Row>
             <Col xs={2}>
@@ -224,22 +416,53 @@ const VehicleDetails: React.FC = () => {
                 <form>
                   <label htmlFor="files">
                     <span>Adicionar imagens</span>
-                    <img
-                      src={uploadImg}
-                      alt="upload"
-                    />
+                    <img src={uploadImg} alt="upload" />
                   </label>
-                  <input type="file" id="files" multiple onChange={handleChange} />
+                  <input
+                    type="file"
+                    id="files"
+                    multiple
+                    onChange={handleChange}
+                  />
                 </form>
               </div>
             </Col>
           </Row>
 
-          <Form className="form-edit" onSubmit={handleSubmit} initialData={id ? car : {}}>
+          <Form
+            className="form-edit"
+            onSubmit={handleSubmit}
+            initialData={vehicle ? vehicle : {}}
+          >
             <Row>
-              <Col md={12}>
+              <Col md={6}>
                 <label>Título</label>
                 <Input name="title" type="text" placeholder="Título" />
+              </Col>
+
+              <Col md={6}>
+                <label>Categoria</label>
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    {category.name ? category.name : 'Selecione a categoria'}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    {categories.map((cat) => (
+                      <Dropdown.Item
+                        key={cat.id}
+                        onClick={() =>
+                          setCategory({
+                            id: cat.id,
+                            name: cat.name,
+                          })
+                        }
+                      >
+                        {cat.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
               </Col>
             </Row>
 
@@ -257,7 +480,11 @@ const VehicleDetails: React.FC = () => {
             <Row>
               <Col md={6}>
                 <label>Ano Fabricação</label>
-                <Input name="year_fab" type="text" placeholder="Ano Fabricação" />
+                <Input
+                  name="year_fab"
+                  type="text"
+                  placeholder="Ano Fabricação"
+                />
               </Col>
               <Col md={6}>
                 <label>Ano Modelo</label>
@@ -301,7 +528,11 @@ const VehicleDetails: React.FC = () => {
             <Row>
               <Col md={12}>
                 <label>Descrição curta</label>
-                <Input name="short_description" type="text" placeholder="Descrição curta" />
+                <Input
+                  name="short_description"
+                  type="text"
+                  placeholder="Descrição curta"
+                />
               </Col>
             </Row>
 
@@ -331,11 +562,10 @@ const VehicleDetails: React.FC = () => {
 
             <button type="submit">{'Salvar'}</button>
           </Form>
-          
         </div>
       </div>
     </>
   );
-}
+};
 
 export { VehicleDetails };

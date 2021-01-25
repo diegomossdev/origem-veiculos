@@ -20,6 +20,8 @@ class Vehicle extends Model {
         description: Sequelize.TEXT,
         optionals: Sequelize.TEXT,
         thumbimage_id: Sequelize.INTEGER,
+        category_id: Sequelize.INTEGER,
+        status: Sequelize.INTEGER,
       },
       {
         sequelize,
@@ -27,9 +29,9 @@ class Vehicle extends Model {
       }
     );
 
-    this.addHook('beforeSave', async vehicle => {
+    this.addHook('beforeSave', async (vehicle) => {
       if (vehicle.brand && vehicle.model && vehicle.year_fab) {
-        let itemsSlug = `${vehicle.brand.toLowerCase()} ${vehicle.model.toLowerCase()} ${vehicle.year_fab.toLowerCase()} ${vehicle.year_mod.toLowerCase()}`
+        let itemsSlug = `${vehicle.brand.toLowerCase()} ${vehicle.model.toLowerCase()} ${vehicle.year_fab.toLowerCase()} ${vehicle.year_mod.toLowerCase()}`;
         vehicle.slug = itemsSlug.replace(/\W+/g, '-');
       }
     });
@@ -39,7 +41,14 @@ class Vehicle extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-    this.belongsTo(models.ThumbImage, { foreignKey: 'thumbimage_id', as: 'thumbimage' });
+    this.belongsTo(models.ThumbImage, {
+      foreignKey: 'thumbimage_id',
+      as: 'thumbimage',
+    });
+    this.belongsTo(models.Category, {
+      foreignKey: 'category_id',
+      as: 'category',
+    });
   }
 }
 

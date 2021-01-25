@@ -5,8 +5,9 @@ import User from '../app/models/User';
 import File from '../app/models/File';
 import Vehicle from '../app/models/Vehicle';
 import ThumbImage from '../app/models/ThumbImage';
+import Category from '../app/models/Category';
 
-const models = [User, File, Vehicle, ThumbImage];
+const models = [User, File, Vehicle, Category, ThumbImage];
 
 class Database {
   constructor() {
@@ -17,8 +18,10 @@ class Database {
     this.connection = new Sequelize(databaseConfig);
 
     models
-      .map(model => model.init(this.connection))
-      .map(model => model.associate && model.associate(this.connection.models));
+      .map((model) => model.init(this.connection))
+      .map(
+        (model) => model.associate && model.associate(this.connection.models)
+      );
   }
 }
 

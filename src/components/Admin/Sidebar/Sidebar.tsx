@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useWindowDimensions from '../../../helpers/getWindowDimensions';
 
 import logo from '../../../assets/admin/dm-logo.png';
@@ -10,71 +10,71 @@ const Sidebar: React.FC = () => {
   return (
     <>
       <div className="sidebar" style={{ height }}>
-        
         <div className="logo">
-          <img src={logo} alt="DM-admin"/>
+          <img src={logo} alt="DM-admin" />
         </div>
 
         <ul>
-          <li>
+          {/* <li>
             <Link to="/admin/banners">
               <div>
-                <span>
-                  Banners
-                </span>
+                <span>Banners</span>
+              </div>
+            </Link>
+          </li> */}
+          <li>
+            <Link to="/admin/novo/veiculo">
+              <div>
+                <span>Adicionar veículos</span>
               </div>
             </Link>
           </li>
           <li>
             <Link to="/admin/veiculos">
               <div>
-                <span>
-                  Todos veículos
-                </span>
+                <span>Todos veículos</span>
               </div>
-
             </Link>
           </li>
           <li>
+            <Link to="/admin">
+              <div>
+                <span>Em breve mais menus.</span>
+              </div>
+            </Link>
+          </li>
+          {/* <li>
             <Link to="/admin/pagina-home">
               <div>
-                <span>
-                  Página home
-                </span>
+                <span>Página home</span>
               </div>
             </Link>
           </li>
           <li>
             <Link to="/admin/pagina-quem-somos">
               <div>
-                <span>
-                  Página quem somos
-                </span>
+                <span>Página quem somos</span>
               </div>
             </Link>
           </li>
           <li>
             <Link to="/admin/contatos">
               <div>
-                <span>
-                  Contatos
-                </span>
+                <span>Contatos</span>
               </div>
             </Link>
           </li>
           <li>
             <Link to="/admin/rodape">
               <div>
-                <span>
-                  Rodapé
-                </span>
+                <span>Rodapé</span>
               </div>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>
   );
-}
+};
 
-export {Sidebar};
+export { Sidebar };
